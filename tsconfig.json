@@ -2,7 +2,8 @@
   "extends": "@tsconfig/node-lts/tsconfig.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "outDir": "public/api"
+    "outDir": "public/api",
+    "sourceMap": true
   },
   "include": ["src/**/*"]
 }
