@@ -6,6 +6,7 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { csrfMiddleware } from "./middleware/csrf.js";
+import authRouter from "./routers/auth.js";
 import rootRouter from "./routers/root.js";
 import userRouter from "./routers/user.js";
 
@@ -36,6 +37,7 @@ app.use(
 );
 app.use("/", rootRouter);
 app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);

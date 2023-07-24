@@ -1,17 +1,38 @@
 import { database } from "./database.js";
-import { User } from "./types.js";
+import { User, UserWithoutPassword } from "./types.js";
 
 /**
  * Gets a user by their email address (excluding their password).
  * @param email The email to look up.
+ * @param includePassword If `false`, omits the user's password hash.
  * @returns A `User` if found, otherwise `null`.
  */
-export async function getUserByEmail(email: string): Promise<User | null> {
+export async function getUserByEmail(
+  email: string,
+): Promise<UserWithoutPassword | null>;
+export async function getUserByEmail(
+  email: string,
+  includePassword: true,
+): Promise<User | null>;
+export async function getUserByEmail(
+  email: string,
+  includePassword: false,
+): Promise<UserWithoutPassword | null>;
+export async function getUserByEmail(
+  email: string,
+  includePassword: boolean = false,
+): Promise<User | null> {
+  const columns = ["id", "email", "verified_at", "created_at", "updated_at"];
+
+  if (includePassword) {
+    columns.push("password");
+  }
+
   try {
     return await database
       .from("users")
       .where({ email })
-      .first<User>("id", "email", "verified_at", "created_at", "updated_at");
+      .first<User>(...columns);
   } catch (error) {
     console.error(error);
     return null;
@@ -21,14 +42,35 @@ export async function getUserByEmail(email: string): Promise<User | null> {
 /**
  * Gets a user by their ID (excluding their password).
  * @param id The ID to look up
+ * @param includePassword If `false`, omits the user's password hash.
  * @returns A `User` if found, otherwise `null`.
  */
-export async function getUserById(id: number): Promise<User | null> {
+export async function getUserById(
+  id: number,
+): Promise<UserWithoutPassword | null>;
+export async function getUserById(
+  id: number,
+  includePassword: true,
+): Promise<User | null>;
+export async function getUserById(
+  id: number,
+  includePassword: false,
+): Promise<UserWithoutPassword | null>;
+export async function getUserById(
+  id: number,
+  includePassword: boolean = false,
+): Promise<User | null> {
+  const columns = ["id", "email", "verified_at", "created_at", "updated_at"];
+
+  if (includePassword) {
+    columns.push("password");
+  }
+
   try {
     return await database
       .from("users")
       .where({ id })
-      .first<User>("id", "email", "verified_at", "created_at", "updated_at");
+      .first<User>(...columns);
   } catch (error) {
     console.error(error);
     return null;
