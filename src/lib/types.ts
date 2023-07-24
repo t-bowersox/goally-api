@@ -19,3 +19,8 @@ export interface User {
   created_at: Date;
   updated_at: Date;
 }
+
+export type UserWithoutPassword = Pick<
+  User,
+  "id" | "email" | "verified_at" | "created_at" | "updated_at"
+>;
