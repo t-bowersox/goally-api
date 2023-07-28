@@ -106,15 +106,15 @@ export async function createUser(
 }
 
 /**
- * Updates a user by their ID.
+ * Updates a single user.
  * @param id The ID of the user to update
  * @param values The values to update
- * @returns The number of updated rows
+ * @returns `true` if successful
  */
 export async function updateUserById(
   id: number,
   values: Partial<User>,
-): Promise<number> {
+): Promise<boolean> {
   try {
     let updated = 0;
 
@@ -122,9 +122,29 @@ export async function updateUserById(
       updated = await trx.table("users").update(values).where({ id });
     });
 
-    return updated;
+    return !!updated;
   } catch (error) {
     console.error(error);
-    return 0;
+    return false;
+  }
+}
+
+/**
+ * Deletes a single user.
+ * @param id The ID of the user to delete
+ * @returns `true` if successful
+ */
+export async function deleteUserById(id: number): Promise<boolean> {
+  try {
+    let deleted = 0;
+
+    await database.transaction(async (trx) => {
+      deleted = await trx.table("users").delete().where({ id });
+    });
+
+    return !!deleted;
+  } catch (error) {
+    console.error(error);
+    return false;
   }
 }
