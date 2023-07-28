@@ -1,38 +1,19 @@
 import express from "express";
-import {
-  deleteVerificationTokenByUserId,
-  upsertVerificationToken,
-} from "../lib/account-verification-tokens.js";
-import { createToken, hashPassword, verifySignature } from "../lib/crypto.js";
-import { database } from "../lib/database.js";
-import { EMAIL_REGEX, sendAccountVerificationEmail } from "../lib/email.js";
-import {
-  badRequest,
-  internalServerError,
-  unauthorized,
-  unprocessableEntity,
-} from "../lib/responses.js";
-import { AuthenticatedSession } from "../lib/types.js";
-import {
-  createUser,
-  getUserByEmail,
-  getUserById,
-  updateUserById,
-} from "../lib/users.js";
-import { AuthenticationMiddleware } from "../middleware/auth.js";
+import { hashPassword } from "../lib/crypto.js";
+import { internalServerError, unprocessableEntity } from "../lib/responses.js";
+import { createUser, getUserById, getUserByUsername } from "../lib/users.js";
 
 const router = express.Router();
 
 router.post("/", async (request, response) => {
-  const body: RegistrationBody = request.body;
-  const email = body.email;
-  const password = body.password;
+  const { username, password, passwordConfirmation } =
+    request.body as RegistrationBody;
 
-  if (!email || !EMAIL_REGEX.test(email)) {
+  if (!username || username.length > 50) {
     return unprocessableEntity(
       response,
-      "email",
-      "A valid email address is required.",
+      "username",
+      "A username of 50 characters or less is required..",
     );
   }
 
@@ -44,7 +25,7 @@ router.post("/", async (request, response) => {
     );
   }
 
-  if (password !== body.passwordConfirmation) {
+  if (password !== passwordConfirmation) {
     return unprocessableEntity(
       response,
       "passwordConfirmation",
@@ -52,42 +33,21 @@ router.post("/", async (request, response) => {
     );
   }
 
-  const existingUserWithEmail = await getUserByEmail(email);
+  const existingUserWithUsername = await getUserByUsername(username);
 
-  if (existingUserWithEmail) {
-    return unprocessableEntity(response, "email", `${email} is unavailable.`);
+  if (existingUserWithUsername) {
+    return unprocessableEntity(
+      response,
+      "username",
+      `${username} is unavailable.`,
+    );
   }
 
   const hashedPassword = await hashPassword(password);
-  const userId = await createUser(email, hashedPassword);
+  const userId = await createUser(username, hashedPassword);
 
   if (!userId) {
     return internalServerError(response, "Error creating user.");
-  }
-
-  const verificationToken = createToken(16, "base64url");
-  const verificationTokenId = await upsertVerificationToken(
-    userId,
-    verificationToken,
-  );
-
-  if (!verificationTokenId) {
-    return internalServerError(
-      response,
-      "Error creating account verification token.",
-    );
-  }
-
-  const emailSent = await sendAccountVerificationEmail(
-    email,
-    verificationToken,
-  );
-
-  if (!emailSent) {
-    return internalServerError(
-      response,
-      "Error sending account verification email.",
-    );
   }
 
   request.session = { userId };
@@ -108,80 +68,12 @@ router.get("/", async (request, response) => {
   return response.setHeader("Cache-Control", "max-age=0").json(user);
 });
 
-router.post(
-  "/verify/resend",
-  AuthenticationMiddleware,
-  async (request, response) => {
-    const session = request.session as AuthenticatedSession;
-    const userId = Number.parseInt(session.userId);
-    const user = await getUserById(userId);
-
-    if (!user) {
-      return unauthorized(response);
-    }
-
-    const verificationToken = createToken(16, "base64url");
-    const verificationTokenId = await upsertVerificationToken(
-      userId,
-      verificationToken,
-    );
-
-    if (!verificationTokenId) {
-      return internalServerError(
-        response,
-        "Error creating account verification token.",
-      );
-    }
-
-    const emailSent = await sendAccountVerificationEmail(
-      user.email,
-      verificationToken,
-    );
-
-    if (!emailSent) {
-      return internalServerError(
-        response,
-        "Error sending account verification email.",
-      );
-    }
-
-    return response.json(emailSent);
-  },
-);
-
-router.get(
-  "/verify/:token",
-  AuthenticationMiddleware,
-  async (request, response) => {
-    const session = request.session as AuthenticatedSession;
-    const userId = Number.parseInt(session.userId);
-    const token = request.params.token;
-    const [tokenValue, tokenSignature] = token.split(".");
-    const verified = verifySignature(tokenValue, tokenSignature, "base64url");
-
-    if (!verified) {
-      return badRequest(response, "Verification token is invalid.");
-    }
-
-    const updated = await updateUserById(userId, {
-      verified_at: database.fn.now(),
-    });
-
-    if (!updated) {
-      return internalServerError(response, "Error updating user account.");
-    }
-
-    await deleteVerificationTokenByUserId(userId);
-    return response.json(true);
-  },
-);
-
 export default router;
 
 // Local types
 
 interface RegistrationBody {
-  email: string;
+  username: string;
   password: string;
   passwordConfirmation: string;
 }

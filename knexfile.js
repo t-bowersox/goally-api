@@ -8,12 +8,7 @@ import "process";
  */
 const envDefault = {
   client: process.env.DB_CLIENT,
-  connection: {
-    host: process.env.DB_HOST,
-    port: Number.parseInt(process.env.DB_PORT),
-    user: process.env.DB_USER,
-    database: process.env.DB_NAME,
-  },
+  connection: process.env.DB_URI,
   migrations: {
     tableName: "knex_migrations",
   },
