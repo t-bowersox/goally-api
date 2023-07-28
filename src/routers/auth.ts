@@ -1,19 +1,19 @@
 import express from "express";
 import { verifyPassword } from "../lib/crypto.js";
 import { unauthorized } from "../lib/responses.js";
-import { getUserByEmail } from "../lib/users.js";
+import { getUserByUsername } from "../lib/users.js";
 import { AuthenticationMiddleware } from "../middleware/auth.js";
 
 const router = express.Router();
 
 router.post("/login", async (request, response) => {
-  const { email, password } = request.body as LoginBody;
+  const { username, password } = request.body as LoginBody;
 
-  if (!email || !password) {
+  if (!username || !password) {
     return unauthorized(response);
   }
 
-  const user = await getUserByEmail(email, true);
+  const user = await getUserByUsername(username, true);
 
   if (!user) {
     return unauthorized(response);
@@ -39,6 +39,6 @@ export default router;
 // Local types
 
 interface LoginBody {
-  email: string;
+  username: string;
   password: string;
 }

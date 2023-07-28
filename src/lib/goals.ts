@@ -15,10 +15,11 @@ export async function createGoal(
     let id = 0;
 
     await database.transaction(async (trx) => {
-      const ids = await trx
+      const rows = await trx
         .table<Goal>("goals")
-        .insert({ user_id: userId, description });
-      id = ids[0];
+        .insert({ user_id: userId, description })
+        .returning("id");
+      id = rows[0].id;
     });
 
     return id;
@@ -70,7 +71,7 @@ export async function updateGoalById(
       updated = await trx
         .table("goals")
         .where({ id: goalId, user_id: userId })
-        .update(properties);
+        .update({ ...properties, updated_at: trx.fn.now() });
     });
 
     return updated;

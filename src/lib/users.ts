@@ -2,27 +2,27 @@ import { database } from "./database.js";
 import { User, UserWithoutPassword } from "./types.js";
 
 /**
- * Gets a user by their email address (excluding their password).
- * @param email The email to look up.
+ * Gets a user by their username (excluding their password).
+ * @param username The username to look up.
  * @param includePassword If `false`, omits the user's password hash.
  * @returns A `User` if found, otherwise `null`.
  */
-export async function getUserByEmail(
-  email: string,
+export async function getUserByUsername(
+  username: string,
 ): Promise<UserWithoutPassword | null>;
-export async function getUserByEmail(
-  email: string,
+export async function getUserByUsername(
+  username: string,
   includePassword: true,
 ): Promise<User | null>;
-export async function getUserByEmail(
-  email: string,
+export async function getUserByUsername(
+  username: string,
   includePassword: false,
 ): Promise<UserWithoutPassword | null>;
-export async function getUserByEmail(
-  email: string,
+export async function getUserByUsername(
+  username: string,
   includePassword: boolean = false,
 ): Promise<User | null> {
-  const columns = ["id", "email", "verified_at", "created_at", "updated_at"];
+  const columns = ["id", "username", "created_at", "updated_at"];
 
   if (includePassword) {
     columns.push("password");
@@ -31,7 +31,7 @@ export async function getUserByEmail(
   try {
     return await database
       .from("users")
-      .where({ email })
+      .where({ username })
       .first<User>(...columns);
   } catch (error) {
     console.error(error);
@@ -60,7 +60,7 @@ export async function getUserById(
   id: number,
   includePassword: boolean = false,
 ): Promise<User | null> {
-  const columns = ["id", "email", "verified_at", "created_at", "updated_at"];
+  const columns = ["id", "username", "created_at", "updated_at"];
 
   if (includePassword) {
     columns.push("password");
@@ -79,20 +79,23 @@ export async function getUserById(
 
 /**
  * Creates a new user in the database.
- * @param email The new user's email.
+ * @param username The new user's username.
  * @param password The new user's hashed password.
  * @returns The new user's row ID if successful, otherwise `0`.
  */
 export async function createUser(
-  email: string,
+  username: string,
   password: string,
 ): Promise<number> {
   try {
     let id = 0;
 
     await database.transaction(async (trx) => {
-      const ids = await trx.insert({ email, password }).into("users");
-      id = ids[0];
+      const rows = await trx
+        .insert({ username, password })
+        .into("users")
+        .returning("id");
+      id = rows[0].id;
     });
 
     return id;
