@@ -11,6 +11,15 @@ export interface AccountVerificationToken {
 export type AuthenticatedSession =
   CookieSessionInterfaces.CookieSessionObject & { userId: string };
 
+export interface Goal {
+  id: number;
+  user_id: number;
+  description: string;
+  accomplished: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export interface User {
   id: number;
   email: string;
