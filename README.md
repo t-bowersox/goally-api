@@ -1,3 +1,3 @@
 # goally-api
 
-Backedn REST API for the Goally app
+Backend REST API for the Goally app
