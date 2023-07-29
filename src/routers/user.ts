@@ -1,6 +1,7 @@
 import express from "express";
 import { hashPassword, verifyPassword } from "../lib/crypto.js";
 import {
+  badRequest,
   internalServerError,
   unauthorized,
   unprocessableEntity,
@@ -44,12 +45,7 @@ router.post("/", async (request, response) => {
   }
 
   request.session = { userId };
-
-  const user = await getUserById(userId);
-
-  return user
-    ? response.status(201).json(user)
-    : internalServerError(response, "Error retrieving user.");
+  return response.status(201).json(true);
 });
 
 router.get("/", async (request, response) => {
@@ -76,7 +72,7 @@ router.put("/", AuthenticationMiddleware, async (request, response) => {
 
   const updates: Partial<User> = {};
 
-  if (body.username) {
+  if (body.username && body.username !== user.username) {
     const usernameValidationResult = await validateUsername(body.username);
 
     if (usernameValidationResult !== true) {
@@ -96,7 +92,7 @@ router.put("/", AuthenticationMiddleware, async (request, response) => {
       body.newPasswordConfirmation ?? "",
     );
 
-    if (!passwordValidationResult) {
+    if (passwordValidationResult !== true) {
       return unprocessableEntity(
         response,
         "password",
@@ -105,6 +101,10 @@ router.put("/", AuthenticationMiddleware, async (request, response) => {
     }
 
     updates.password = await hashPassword(body.newPassword);
+  }
+
+  if (!Object.keys(updates).length) {
+    return badRequest(response, "No updates were provided.");
   }
 
   const updated = await updateUserById(Number.parseInt(userId), updates);

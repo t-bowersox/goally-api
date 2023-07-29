@@ -82,5 +82,10 @@ export function verifySignature(
  * @returns `true` if equal
  */
 export function safeEqual(valueA: string, valueB: string): boolean {
-  return timingSafeEqual(Buffer.from(valueA), Buffer.from(valueB));
+  try {
+    return timingSafeEqual(Buffer.from(valueA), Buffer.from(valueB));
+  } catch (error) {
+    // Error means the values have different byte lengths
+    return false;
+  }
 }

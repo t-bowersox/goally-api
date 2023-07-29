@@ -5,7 +5,11 @@ import {
   getGoalsByUserId,
   updateGoalById,
 } from "../lib/goals.js";
-import { internalServerError, unprocessableEntity } from "../lib/responses.js";
+import {
+  badRequest,
+  internalServerError,
+  unprocessableEntity,
+} from "../lib/responses.js";
 import { AuthenticatedSession, Goal } from "../lib/types.js";
 import { AuthenticationMiddleware } from "../middleware/auth.js";
 
@@ -29,7 +33,7 @@ router.post("/", AuthenticationMiddleware, async (request, response) => {
     return internalServerError(response, "Error creating goal.");
   }
 
-  return response.status(201).json(goalId);
+  return response.status(201).json(true);
 });
 
 router.get("/", AuthenticationMiddleware, async (request, response) => {
@@ -67,6 +71,10 @@ router.put("/:id", AuthenticationMiddleware, async (request, response) => {
         "Accomplished must be a boolean.",
       );
     }
+  }
+
+  if (!Object.keys(updates).length) {
+    return badRequest(response, "No updates were provided.");
   }
 
   const updated = await updateGoalById(
