@@ -13,22 +13,20 @@ export const csrfMiddleware: RequestHandler = (request, response, next) => {
   const cookieToken: string = request.cookies["XSRF-TOKEN"];
 
   if (!headerToken || Array.isArray(headerToken) || !cookieToken) {
-    return badRequest(response, "Missing CSRF token.");
+    return badRequest(response);
   }
 
   const [headerTokenValue, headerTokenSignature] = headerToken.split(".");
   const [cookieTokenValue, cookieTokenSignature] = cookieToken.split(".");
 
   if (
-    !headerTokenValue ||
     !headerTokenSignature ||
-    !cookieTokenValue ||
     !cookieTokenSignature ||
     !verifySignature(headerTokenValue, headerTokenSignature) ||
     !verifySignature(cookieTokenValue, cookieTokenSignature) ||
     !safeEqual(headerTokenValue, cookieTokenValue)
   ) {
-    return badRequest(response, "Invalid CSRF token.");
+    return badRequest(response);
   }
 
   return next();

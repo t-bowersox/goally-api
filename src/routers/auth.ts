@@ -39,6 +39,6 @@ export default router;
 // Local types
 
 interface LoginBody {
-  username: string;
-  password: string;
+  username?: string;
+  password?: string;
 }

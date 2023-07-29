@@ -11,6 +11,7 @@ router.get("/csrf-token", (_request, response) => {
       sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
     })
+    .status(204)
     .send();
 });
 
