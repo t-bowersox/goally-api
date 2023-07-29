@@ -1,8 +1,8 @@
 {
   "extends": "@tsconfig/node-lts/tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
     "outDir": "dist",
     "sourceMap": true
-  }
+  },
+  "include": ["**/src/**/*.ts"]
 }
