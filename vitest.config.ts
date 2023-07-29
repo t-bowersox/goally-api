@@ -6,7 +6,7 @@ export default defineConfig(() => {
   return {
     test: {
       env,
-      singleThread: true,
+      singleThread: true, // Test database state gets out of whack otherwise
     },
   };
 });

@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cookieSession from "cookie-session";
+import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -24,6 +25,11 @@ app.use(cookieParser(secretKey));
 if (env !== "test") {
   app.use(morgan(env === "development" ? "dev" : "combined"));
   app.use(csrfMiddleware);
+  app.use(
+    cors({
+      origin: env === "development" ? "*" : /goally\.app$/,
+    }),
+  );
 }
 
 app.use(
