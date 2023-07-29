@@ -43,64 +43,72 @@ router.get("/", AuthenticationMiddleware, async (request, response) => {
   return response.json(goals);
 });
 
-router.put("/:id", AuthenticationMiddleware, async (request, response) => {
-  const { userId } = request.session as AuthenticatedSession;
-  const goalId = Number.parseInt(request.params.id);
-  const { description, accomplished } = request.body as UpdateGoalBody;
-  const updates: Partial<Goal> = {};
+router.put(
+  "/:id(\\d+)",
+  AuthenticationMiddleware,
+  async (request, response) => {
+    const { userId } = request.session as AuthenticatedSession;
+    const goalId = Number.parseInt(request.params.id);
+    const { description, accomplished } = request.body as UpdateGoalBody;
+    const updates: Partial<Goal> = {};
 
-  if (description !== undefined) {
-    if (description) {
-      updates.description = description;
-    } else {
-      return unprocessableEntity(
-        response,
-        "description",
-        "A description is required.",
-      );
+    if (description !== undefined) {
+      if (description) {
+        updates.description = description;
+      } else {
+        return unprocessableEntity(
+          response,
+          "description",
+          "A description is required.",
+        );
+      }
     }
-  }
 
-  if (accomplished !== undefined) {
-    if (typeof accomplished === "boolean") {
-      updates.accomplished = accomplished;
-    } else {
-      return unprocessableEntity(
-        response,
-        "accomplished",
-        "Accomplished must be a boolean.",
-      );
+    if (accomplished !== undefined) {
+      if (typeof accomplished === "boolean") {
+        updates.accomplished = accomplished;
+      } else {
+        return unprocessableEntity(
+          response,
+          "accomplished",
+          "Accomplished must be a boolean.",
+        );
+      }
     }
-  }
 
-  if (!Object.keys(updates).length) {
-    return badRequest(response, "No updates were provided.");
-  }
+    if (!Object.keys(updates).length) {
+      return badRequest(response, "No updates were provided.");
+    }
 
-  const updated = await updateGoalById(
-    goalId,
-    Number.parseInt(userId),
-    updates,
-  );
+    const updated = await updateGoalById(
+      goalId,
+      Number.parseInt(userId),
+      updates,
+    );
 
-  if (!updated) {
-    return internalServerError(response, "Error updating goal.");
-  }
+    if (!updated) {
+      return internalServerError(response, "Error updating goal.");
+    }
 
-  return response.json(true);
-});
+    return response.json(true);
+  },
+);
 
-router.delete("/:id", AuthenticationMiddleware, async (request, response) => {
-  const { userId } = request.session as AuthenticatedSession;
-  const goalId = Number.parseInt(request.params.id);
-  const deleted = await deleteGoalById(goalId, Number.parseInt(userId));
+router.delete(
+  "/:id(\\d+)",
+  AuthenticationMiddleware,
+  async (request, response) => {
+    const { userId } = request.session as AuthenticatedSession;
+    const goalId = Number.parseInt(request.params.id);
+    const deleted = await deleteGoalById(goalId, Number.parseInt(userId));
 
-  if (!deleted) {
-    return internalServerError(response, "Error deleting goal.");
-  }
+    if (!deleted) {
+      return internalServerError(response, "Error deleting goal.");
+    }
 
-  return response.json(true);
-});
+    return response.json(true);
+  },
+);
 
 export default router;
 
