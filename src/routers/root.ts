@@ -10,6 +10,7 @@ router.get("/csrf-token", (_request, response) => {
     .cookie("XSRF-TOKEN", `${token}.${signature}`, {
       sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
+      domain: process.env.APP_DOMAIN,
     })
     .status(204)
     .send();
