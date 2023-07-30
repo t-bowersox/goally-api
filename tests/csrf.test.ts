@@ -8,10 +8,14 @@ describe("/csrf-token", () => {
   test("sets a token in a cookie", async () => {
     const response = await supertest(app).get("/csrf-token");
     expect(response.statusCode).toBe(204);
+    expect(
+      response.get("Access-Control-Allow-Credentials").includes("true"),
+    ).toBe(true);
 
     const [csrfCookie] = response.get("Set-Cookie");
     expect(csrfCookie.startsWith("XSRF-TOKEN")).toBe(true);
     expect(csrfCookie.includes("SameSite=Strict")).toBe(true);
+    expect(csrfCookie.includes("Domain=localhost")).toBe(true);
   });
 });
 

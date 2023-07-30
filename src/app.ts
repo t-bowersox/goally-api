@@ -5,6 +5,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import { credentialsMiddleware } from "./middleware/credentials.js";
 import { csrfMiddleware } from "./middleware/csrf.js";
 import authRouter from "./routers/auth.js";
 import goalsRouter from "./routers/goals.js";
@@ -41,9 +42,11 @@ app.use(
     httpOnly: true,
     signed: env !== "test",
     maxAge: 24 * 60 * 60 * 1000, // 24 hours in ms
+    domain: process.env.APP_DOMAIN,
   }),
 );
 app.use(bodyParser.json());
+app.use(credentialsMiddleware);
 
 app.use("/", rootRouter);
 app.use("/user", userRouter);

@@ -20,7 +20,7 @@ I want to make it super clear that I am not intending this to be a full-fledged 
 
 - Not asking for an email address to sign up (just a username), so less PII in the database
 - Using the bare minimum hosting resources as possible
-- Resetting the database (i.e. wiping all the data) every 24 hours or so
+- Removing users after 24 hours of inactivity
 
 Of course, I'll have a disclaimer in the client-side apps about that last point. However, this should allow anyone interested enough time to explore before their data is cleared.
 

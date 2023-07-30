@@ -69,6 +69,9 @@ describe("/auth", () => {
       expect(
         response.get("Set-Cookie").find((c) => c.startsWith("goally-session")),
       ).toBeTruthy();
+      expect(
+        response.get("Access-Control-Allow-Credentials").includes("true"),
+      ).toBe(true);
     });
   });
 
@@ -91,6 +94,9 @@ describe("/auth", () => {
           .get("Set-Cookie")
           .find((c) => c.includes("expires=Thu, 01 Jan 1970 00:00:00 GMT")),
       ).toBeTruthy();
+      expect(
+        response.get("Access-Control-Allow-Credentials").includes("true"),
+      ).toBe(true);
     });
   });
 });
