@@ -54,7 +54,11 @@ router.get("/", async (request, response) => {
   }
 
   const user = await getUserById(request.session.userId);
-  return response.setHeader("Cache-Control", "max-age=0").json(user);
+  return response
+    .setHeader("Cache-Control", "no-cache, no-store, must-revalidate")
+    .setHeader("Pragma", "no-cache")
+    .setHeader("Expires", "0")
+    .json(user);
 });
 
 router.put("/", AuthenticationMiddleware, async (request, response) => {

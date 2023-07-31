@@ -129,7 +129,11 @@ describe("/user", () => {
       expect(userResponse.status).toBe(200);
       expect(userResponse.body.username).toBe("foobar");
       expect(userResponse.body.password).toBeUndefined();
-      expect(userResponse.get("Cache-Control")).toContain("max-age=0");
+      expect(userResponse.get("Cache-Control")).toContain(
+        "no-cache, no-store, must-revalidate",
+      );
+      expect(userResponse.get("Pragma")).toContain("no-cache");
+      expect(userResponse.get("Expires")).toContain("0");
     });
   });
 
