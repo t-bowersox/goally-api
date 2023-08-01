@@ -34,6 +34,7 @@ If you'd like to try out this API for yourself locally, you'll first need to set
 2. Run `npm install`
 3. Create a copy of `.env.example` as `.env`.
    - Set `API_PORT` to the port on which you want the app to listen
+   - Set `APP_DOMAIN` to `localhost`
    - Set `DB_CLIENT` to `pg`
    - Set `DB_URI` to the Postgres connection string for your local instance
    - Set `NODE_ENV` to `development`
