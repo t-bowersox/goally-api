@@ -22,6 +22,7 @@ export interface User {
   id: number;
   username: string;
   password: string;
+  last_activity_at: Date | null;
   created_at: Date;
   updated_at: Date;
 }

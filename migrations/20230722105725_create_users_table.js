@@ -7,6 +7,7 @@ export async function up(knex) {
     table.increments("id");
     table.string("username", 50).notNullable().unique();
     table.string("password", 255).notNullable();
+    table.timestamp("last_activity_at").defaultTo(knex.fn.now()).index();
     table.timestamps(true, true);
   });
 }
