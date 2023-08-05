@@ -13,6 +13,8 @@ import rootRouter from "./routers/root.js";
 import userRouter from "./routers/user.js";
 
 export const app = express();
+app.set("trust proxy", true);
+
 const env = process.env.NODE_ENV;
 const secretKey = process.env.SECRET_KEY;
 
