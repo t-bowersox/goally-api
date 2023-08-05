@@ -42,6 +42,19 @@ export function unprocessableEntity(
 }
 
 /**
+ * Returns a 429 response for invalid request input.
+ * @param response The route handler's `Response` object.
+ * @param reason The reason that the request was rate limited.
+ * @returns
+ */
+export function tooManyRequests(
+  response: Response,
+  reason: string = "Too Many Requests",
+): Response {
+  return response.status(429).json({ reason });
+}
+
+/**
  * Returns a 500 response for an internal server error.
  * @param response The route handler's `Response` object.
  * @param reason The reason that the error occurred.

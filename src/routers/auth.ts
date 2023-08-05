@@ -3,10 +3,11 @@ import { verifyPassword } from "../lib/crypto.js";
 import { unauthorized } from "../lib/responses.js";
 import { getUserByUsername } from "../lib/users.js";
 import { AuthenticationMiddleware } from "../middleware/auth.js";
+import { rateLimiterMiddleware } from "../middleware/rateLimiter.js";
 
 const router = express.Router();
 
-router.post("/login", async (request, response) => {
+router.post("/login", rateLimiterMiddleware, async (request, response) => {
   const { username, password } = request.body as LoginBody;
 
   if (!username || !password) {
