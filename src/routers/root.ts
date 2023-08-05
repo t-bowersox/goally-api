@@ -6,11 +6,13 @@ const router = express.Router();
 router.get("/csrf-token", (_request, response) => {
   const token = createToken();
   const signature = createSignature(token);
+  const env = process.env.NODE_ENV;
+
   return response
     .cookie("XSRF-TOKEN", `${token}.${signature}`, {
       sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-      domain: process.env.APP_DOMAIN,
+      secure: env === "production",
+      domain: env === "production" ? undefined : process.env.APP_DOMAIN,
     })
     .status(204)
     .send();
