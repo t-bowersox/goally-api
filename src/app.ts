@@ -43,7 +43,7 @@ app.use(
     httpOnly: true,
     signed: env !== "test",
     maxAge: 24 * 60 * 60 * 1000, // 24 hours in ms
-    domain: process.env.APP_DOMAIN,
+    domain: env === "production" ? undefined : process.env.APP_DOMAIN,
   }),
 );
 app.use(bodyParser.json());
