@@ -1,4 +1,5 @@
 import { database } from "./database.js";
+import logger from "./logger.js";
 import { User, UserWithoutPassword } from "./types.js";
 
 /**
@@ -40,7 +41,7 @@ export async function getUserByUsername(
       .where({ username })
       .first<User>(...columns);
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return null;
   }
 }
@@ -85,7 +86,7 @@ export async function getUserById(
       .first<User>(...columns);
     return user ?? null;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return null;
   }
 }
@@ -113,7 +114,7 @@ export async function createUser(
 
     return id;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return 0;
   }
 }
@@ -140,7 +141,7 @@ export async function updateUserById(
 
     return !!updated;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return false;
   }
 }
@@ -160,7 +161,7 @@ export async function deleteUserById(id: number): Promise<boolean> {
 
     return !!deleted;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return false;
   }
 }
@@ -183,7 +184,7 @@ export async function updateUserActivity(id: number): Promise<boolean> {
 
     return !!updated;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return false;
   }
 }

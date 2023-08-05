@@ -1,3 +1,4 @@
+import { jobLogger } from "../jobs/job-logger.js";
 import { database } from "./database.js";
 
 export async function deleteInactiveUsers(
@@ -15,10 +16,9 @@ export async function deleteInactiveUsers(
         .where("last_activity_at", "<", threshold)
         .delete();
 
-      console.log(`Deleted ${deleted} records.`);
+      jobLogger.info(`Deleted ${deleted} records.`);
     } catch (error) {
-      console.error("Error deleting users!");
-      console.error(error);
+      jobLogger.error(error);
       exitStatus = 1;
     }
   });
