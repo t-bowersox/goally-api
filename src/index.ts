@@ -5,7 +5,7 @@ import { app } from "./app.js";
 import logger from "./lib/logger.js";
 import { healthCheck, onSignal } from "./lib/terminus.js";
 
-const port = Number.parseInt(process.env.API_PORT ?? "3000");
+const port = Number.parseInt(process.env.PORT ?? "3000");
 const server = createServer(app);
 
 createTerminus(server, {
