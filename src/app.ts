@@ -28,7 +28,7 @@ if (env !== "test") {
   app.use(csrfMiddleware);
   app.use(
     cors({
-      origin: env === "development" ? "*" : /goally\.app$/,
+      origin: env === "development" ? "*" : /\.goally\.app$/,
     }),
   );
 }
