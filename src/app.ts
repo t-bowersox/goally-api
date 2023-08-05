@@ -29,6 +29,7 @@ if (env !== "test") {
   app.use(
     cors({
       origin: env === "development" ? "*" : /\.goally\.app$/,
+      credentials: true,
     }),
   );
 }
