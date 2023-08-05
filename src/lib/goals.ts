@@ -1,4 +1,5 @@
 import { database } from "./database.js";
+import logger from "./logger.js";
 import { Goal } from "./types.js";
 
 /**
@@ -24,7 +25,7 @@ export async function createGoal(
 
     return id;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return 0;
   }
 }
@@ -47,7 +48,7 @@ export async function getGoalsByUserId(userId: number): Promise<Goal[]> {
       return goal;
     });
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return [];
   }
 }
@@ -76,7 +77,7 @@ export async function updateGoalById(
 
     return updated;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return 0;
   }
 }
@@ -103,7 +104,7 @@ export async function deleteGoalById(
 
     return deleted;
   } catch (error) {
-    console.error(error);
+    logger.error(error);
     return 0;
   }
 }

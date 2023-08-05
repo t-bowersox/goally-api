@@ -1,4 +1,5 @@
 import { database } from "./database.js";
+import logger from "./logger.js";
 
 /**
  * Executes cleanup actions for graceful shutdown.
@@ -7,8 +8,7 @@ export async function onSignal(): Promise<void> {
   try {
     await database.destroy();
   } catch (error) {
-    console.error("Error closing database!");
-    console.error(error);
+    logger.error(error);
   }
 }
 
