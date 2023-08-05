@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
 import { unauthorized } from "../lib/responses.js";
+import { updateUserActivity } from "../lib/users.js";
 
-export const AuthenticationMiddleware: RequestHandler = (
+export const AuthenticationMiddleware: RequestHandler = async (
   request,
   response,
   next,
@@ -11,5 +12,9 @@ export const AuthenticationMiddleware: RequestHandler = (
     return unauthorized(response);
   }
 
-  return next();
+  next();
+
+  if (request.session?.userId) {
+    await updateUserActivity(Number.parseInt(request.session.userId));
+  }
 };

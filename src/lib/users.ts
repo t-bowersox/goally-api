@@ -22,7 +22,13 @@ export async function getUserByUsername(
   username: string,
   includePassword: boolean = false,
 ): Promise<User | null> {
-  const columns = ["id", "username", "created_at", "updated_at"];
+  const columns = [
+    "id",
+    "username",
+    "last_activity_at",
+    "created_at",
+    "updated_at",
+  ];
 
   if (includePassword) {
     columns.push("password");
@@ -60,17 +66,24 @@ export async function getUserById(
   id: number,
   includePassword: boolean = false,
 ): Promise<User | null> {
-  const columns = ["id", "username", "created_at", "updated_at"];
+  const columns = [
+    "id",
+    "username",
+    "last_activity_at",
+    "created_at",
+    "updated_at",
+  ];
 
   if (includePassword) {
     columns.push("password");
   }
 
   try {
-    return await database
+    const user = await database
       .from("users")
       .where({ id })
       .first<User>(...columns);
+    return user ?? null;
   } catch (error) {
     console.error(error);
     return null;
@@ -119,7 +132,10 @@ export async function updateUserById(
     let updated = 0;
 
     await database.transaction(async (trx) => {
-      updated = await trx.table("users").update(values).where({ id });
+      updated = await trx
+        .table("users")
+        .update({ ...values, updated_at: trx.fn.now() })
+        .where({ id });
     });
 
     return !!updated;
@@ -143,6 +159,29 @@ export async function deleteUserById(id: number): Promise<boolean> {
     });
 
     return !!deleted;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
+
+/**
+ * Sets the last activity date for a user to the current timestamp.
+ * @param id The ID of the user to update
+ * @returns `true` if successful
+ */
+export async function updateUserActivity(id: number): Promise<boolean> {
+  try {
+    let updated = 0;
+
+    await database.transaction(async (trx) => {
+      updated = await trx
+        .table("users")
+        .update({ last_activity_at: trx.fn.now() })
+        .where({ id });
+    });
+
+    return !!updated;
   } catch (error) {
     console.error(error);
     return false;
