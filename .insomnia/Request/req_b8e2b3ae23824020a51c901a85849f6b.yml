@@ -1,7 +1,7 @@
 _id: req_b8e2b3ae23824020a51c901a85849f6b
 type: Request
 parentId: fld_44160d427dee4a18bd535b85c6c982b8
-modified: 1692459375105
+modified: 1692460417665
 created: 1690110543394
 url: "{{ _.baseUrl }}/user"
 name: create
@@ -11,9 +11,9 @@ body:
   mimeType: application/json
   text: |-
     {
-    	"username": "tim",
-    	"password": "password",
-    	"passwordConfirmation": "password"
+    	"username": "{{ _.username }}",
+    	"password": "{{ _.password }}",
+    	"passwordConfirmation": "{{ _.password }}"
     }
 parameters: []
 headers:
