@@ -1,0 +1,33 @@
+_id: req_df1eebdcda2a4be4af1eb0d5e2aad218
+type: Request
+parentId: fld_f504552a2a19422ca167d0bb03685649
+modified: 1690636631029
+created: 1690555827916
+url: "{{ _.baseUrl }}/goals"
+name: create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"description": "Create another goal"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_0b9fb4c1fd494929b00742ddaac39e6e
+  - id: pair_f9ffa10b65d64e3c974133a897f6355a
+    name: X-XSRF-TOKEN
+    value: "{% request 'cookie', 'XSRF-TOKEN', 0 %}"
+    description: ""
+authentication: {}
+metaSortKey: -1690555827916
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

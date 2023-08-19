@@ -1,0 +1,33 @@
+_id: req_571ccb0c0cdc4a33b9147d6425f1dd3d
+type: Request
+parentId: fld_44160d427dee4a18bd535b85c6c982b8
+modified: 1690569971818
+created: 1690569812013
+url: "{{ _.baseUrl }}/user"
+name: delete
+description: ""
+method: DELETE
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"password": "newpassword"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_9655af20c58741a6be2a795ba91d9671
+  - id: pair_fd115bafaffd45bcadd160fe167462c6
+    name: X-XSRF-TOKEN
+    value: "{% request 'cookie', 'XSRF-TOKEN', 0 %}"
+    description: ""
+authentication: {}
+metaSortKey: -1690569812013
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
