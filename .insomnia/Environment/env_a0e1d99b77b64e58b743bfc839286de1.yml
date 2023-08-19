@@ -1,14 +1,16 @@
 _id: env_a0e1d99b77b64e58b743bfc839286de1
 type: Environment
 parentId: wrk_8d95fbb0edbe4804beb8d95c243f30b8
-modified: 1692460344896
+modified: 1692460966753
 created: 1690110391469
 name: Base Environment
 data:
-  username: tim
-  password: password
+  baseUrl: http://localhost:3000
+  username: ""
+  password: ""
 dataPropertyOrder:
   "&":
+    - baseUrl
     - username
     - password
 color: null
