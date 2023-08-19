@@ -1,0 +1,34 @@
+_id: req_19a9726d9f354e108fd66adbe24f45b5
+type: Request
+parentId: fld_f504552a2a19422ca167d0bb03685649
+modified: 1690637226359
+created: 1690555963562
+url: "{{ _.baseUrl }}/goals/5"
+name: update
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"description": "Update a goal",
+    	"accomplished": true
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_5bb61e4e5a6244e8b1a0dfc3c03eed00
+  - id: pair_7f92308c718344e29c5078b24fbe22ba
+    name: X-XSRF-TOKEN
+    value: "{% request 'cookie', 'XSRF-TOKEN', 0 %}"
+    description: ""
+authentication: {}
+metaSortKey: -1690555963562
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

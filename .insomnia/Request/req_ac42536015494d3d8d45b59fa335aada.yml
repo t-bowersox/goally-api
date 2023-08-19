@@ -1,0 +1,25 @@
+_id: req_ac42536015494d3d8d45b59fa335aada
+type: Request
+parentId: fld_f504552a2a19422ca167d0bb03685649
+modified: 1690566548750
+created: 1690556317409
+url: "{{ _.baseUrl }}/goals/2"
+name: delete
+description: ""
+method: DELETE
+body: {}
+parameters: []
+headers:
+  - id: pair_96b70fddd13e436ab0179a389003fe3e
+    name: X-XSRF-TOKEN
+    value: "{% request 'cookie', 'XSRF-TOKEN', 0 %}"
+    description: ""
+authentication: {}
+metaSortKey: -1690556317409
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

@@ -1,0 +1,39 @@
+_id: req_b8e2b3ae23824020a51c901a85849f6b
+type: Request
+parentId: fld_44160d427dee4a18bd535b85c6c982b8
+modified: 1692459375105
+created: 1690110543394
+url: "{{ _.baseUrl }}/user"
+name: create
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"username": "tim",
+    	"password": "password",
+    	"passwordConfirmation": "password"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_70690fefb92842b08e3653874fcfe66a
+  - id: pair_bdcf895170064934889caf6a93d22dc8
+    name: X-XSRF-TOKEN
+    value: "{% request 'cookie', 'XSRF-TOKEN', 0 %}"
+    description: ""
+  - id: pair_864d7c5f467644609c2132270e698995
+    name: ""
+    value: ""
+    description: ""
+authentication: {}
+metaSortKey: -1690110543394
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

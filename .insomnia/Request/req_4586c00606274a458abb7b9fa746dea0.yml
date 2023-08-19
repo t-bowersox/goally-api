@@ -1,0 +1,21 @@
+_id: req_4586c00606274a458abb7b9fa746dea0
+type: Request
+parentId: fld_f504552a2a19422ca167d0bb03685649
+modified: 1690555986491
+created: 1690555904698
+url: "{{ _.baseUrl }}/goals"
+name: get all
+description: ""
+method: GET
+body: {}
+parameters: []
+headers: []
+authentication: {}
+metaSortKey: -1690555904698
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

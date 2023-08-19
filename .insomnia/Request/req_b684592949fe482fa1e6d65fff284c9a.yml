@@ -1,0 +1,34 @@
+_id: req_b684592949fe482fa1e6d65fff284c9a
+type: Request
+parentId: fld_456b775f926d47fab87aae9dbbf4beda
+modified: 1690636621145
+created: 1690555145671
+url: "{{ _.baseUrl }}/auth/login"
+name: login
+description: ""
+method: POST
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"username": "tim",
+    	"password": "password"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_8f4ff7d9ed4f470388e0dd4faa1acbbc
+  - id: pair_bf20b10797af4dd299cfb80c81810f50
+    name: X-XSRF-TOKEN
+    value: "{% request 'cookie', 'XSRF-TOKEN', 0 %}"
+    description: ""
+authentication: {}
+metaSortKey: -1690555145671
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global

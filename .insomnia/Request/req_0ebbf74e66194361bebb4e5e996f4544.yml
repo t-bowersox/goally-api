@@ -1,0 +1,34 @@
+_id: req_0ebbf74e66194361bebb4e5e996f4544
+type: Request
+parentId: fld_44160d427dee4a18bd535b85c6c982b8
+modified: 1690569967998
+created: 1690569626046
+url: "{{ _.baseUrl }}/user"
+name: update username
+description: ""
+method: PUT
+body:
+  mimeType: application/json
+  text: |-
+    {
+    	"username": "robert",
+    	"currentPassword": "newpassword"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+    id: pair_e79a7fff8379453682484912b951d105
+  - id: pair_c313688e95ae4cb09331f21daa8581a0
+    name: X-XSRF-TOKEN
+    value: "{% request 'cookie', 'XSRF-TOKEN', 0 %}"
+    description: ""
+authentication: {}
+metaSortKey: -1690569626046
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
